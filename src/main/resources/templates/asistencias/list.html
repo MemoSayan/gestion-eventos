@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: headfrag('Listado de Asistencias')"></head>
+
+<body>
+
+<div th:replace="fragments/head :: navbar"></div>
+
+<!-- Contenedor principal -->
+<div class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Asistencias</h1>
+    <a class="btn btn-primary" th:href="@{/asistencias/nuevo}">
+      <i class="bi bi-check2-square"></i> Registrar Asistencia
+    </a>
+  </div>
+
+  <!-- Tabla estilizada con Bootstrap -->
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Evento</th>
+      <th>Persona</th>
+      <th>Asistirá</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${asistencias}">
+      <td th:text="${a.idAsistencia}"></td>
+      <td th:text="${a.evento.descripcionEvento}"></td>
+      <td th:text="${a.persona.nombrePersona + ' ' + a.persona.apellidoPersona}"></td>
+      <td>
+        <span th:if="${a.asistir}" class="badge bg-success">Sí</span>
+        <span th:unless="${a.asistir}" class="badge bg-secondary">No</span>
+      </td>
+      <td>
+        <a class="btn btn-sm btn-warning me-1"
+           th:href="@{/asistencias/editar/{id}(id=${a.idAsistencia})}">
+          <i class="bi bi-pencil"></i>
+        </a>
+        <a class="btn btn-sm btn-danger"
+           th:href="@{/asistencias/eliminar/{id}(id=${a.idAsistencia})}"
+           onclick="return confirm('¿Eliminar esta asistencia?')">
+          <i class="bi bi-trash"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<footer class="text-center py-3">
+  <small>© 2025 Guillermo</small>
+</footer>
+
+<!-- Scripts de Bootstrap y Bootstrap Icons -->
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
+<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css}" rel="stylesheet"/>
+</body>
+</html>

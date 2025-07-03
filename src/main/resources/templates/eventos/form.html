@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="pageTitle=${evento.codigoEvento} == null ? 'Nuevo Evento' : 'Editar Evento'">
+
+<head th:replace="~{fragments/head :: headfrag(${pageTitle})}"></head>
+<body>
+
+<div th:replace="fragments/head :: navbar"></div>
+
+<!-- Contenedor principal -->
+<div class="container mt-5">
+
+    <h1 th:text="${pageTitle}"></h1>
+
+    <!-- Formulario con Bootstrap -->
+    <form th:action="@{/eventos/guardar}" th:object="${evento}" method="post">
+        <input type="hidden" th:field="*{codigoEvento}" />
+        <div class="mb-3">
+            <label for="descripcionEvento" class="form-label">Descripción</label>
+            <input type="text"
+                   id="descripcionEvento"
+                   th:field="*{descripcionEvento}"
+                   class="form-control"
+                   placeholder="Descripción del evento"
+                   required />
+            <div class="text-danger mt-1"
+                 th:if="${#fields.hasErrors('descripcionEvento')}"
+                 th:errors="*{descripcionEvento}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="ciudadEvento" class="form-label">Ciudad</label>
+            <select id="ciudadEvento"
+                    th:field="*{ciudadEvento.codigoCiudad}"
+                    class="form-select"
+                    required>
+                <option value="" disabled selected>Seleccione una ciudad</option>
+                <option th:each="c : ${ciudades}"
+                        th:value="${c.codigoCiudad}"
+                        th:text="${c.descripcionCiudad}">
+                </option>
+            </select>
+            <div class="text-danger mt-1"
+                 th:if="${#fields.hasErrors('ciudadEvento')}"
+                 th:errors="*{ciudadEvento}"></div>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-save"></i> Guardar
+            </button>
+            <a th:href="@{/eventos}" class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+
+<footer class="text-center py-3">
+    <small>© 2025 Guillermo</small>
+</footer>
+
+<!-- Scripts de Bootstrap y Bootstrap Icons -->
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
+<link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css}" rel="stylesheet"/>
+</body>
+</html>
